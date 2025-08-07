@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foodie Menu</title>
+  <style>
+    :root {
+      --primary: #ffffff;
+      --accent: #ff7e5f;
+      --card-glass: rgba(255, 255, 255, 0.1);
+      --card-border: rgba(255, 255, 255, 0.2);
+      --shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: blur(5px);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #fff;
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 1rem;
+    }
+
+    .menu-card {
+      background: var(--card-glass);
+      border: 1px solid var(--card-border);
+      border-radius: 1.2rem;
+      box-shadow: var(--shadow);
+      color: #fff;
+      padding: 1.5rem;
+      text-align: center;
+      transition: 0.3s ease;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+    }
+
+    .menu-card img {
+      width: 100%;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .item-name {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .item-price {
+      color: var(--accent);
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <h1>Our Menu</h1>
+  <div class="menu-grid">
+    <div class="menu-card">
+      <img src="pizza.jpg" alt="Pizza" />
+      <div class="item-name">Classic Pizza</div>
+      <div class="item-price">₹300</div>
+    </div>
+    <div class="menu-card">
+      <img src="burger.jpg" alt="Burger" />
+      <div class="item-name">Cheese Burger</div>
+      <div class="item-price">₹199</div>
+    </div>
+    <div class="menu-card">
+      <img src="pasta.jpg" alt="Pasta" />
+      <div class="item-name">White Sauce Pasta</div>
+      <div class="item-price">₹230</div>
+    </div>
+    <div class="menu-card">
+      <img src="noodles.jpg" alt="Noodles" />
+      <div class="item-name">Spicy Noodles</div>
+      <div class="item-price">₹210</div>
+    </div>
+    <!-- Add more items here -->
+  </div>
+</body>
+</html>

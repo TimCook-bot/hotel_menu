@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodie Hotel Menu</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        /* Custom styles for the logo SVG */
+        .logo-svg {
+            width: 40px;
+            height: 40px;
+            fill: #ef4444;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
+        
+        <!-- Header Section with Logo and Hotel Name -->
+        <header class="bg-red-500 text-white p-6 flex items-center justify-between rounded-t-2xl">
+            <div class="flex items-center space-x-4">
+                <!-- Logo Image -->
+                <img src="./Foodie_logo.png" alt="Foodie Hotel Logo" class="h-14 w-auto">
+                <!-- <h1 class="text-3xl font-bold tracking-tight">Foodie</h1> -->
+            </div>
+             <!-- Login button for admin panel -->
+            <button id="show-admin-btn" class="bg-white text-red-500 font-semibold px-4 py-2 rounded-full shadow-lg hover:bg-red-100 transition duration-300">
+                Admin Login
+            </button>
+        </header>
+
+        <!-- Menu Section -->
+        <main class="p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b-2 border-red-500 pb-2">Our Menu</h2>
+            <div id="menu-list" class="space-y-6">
+                <!-- Menu categories and items will be rendered here by JavaScript -->
+            </div>
+        </main>
+
+        <!-- Admin Panel Section (initially hidden) -->
+        <section id="admin-panel" class="p-6 bg-gray-100 hidden">
+            <!-- Admin Login Form -->
+            <div id="admin-login-form">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-400 pb-2">Admin Login</h3>
+                <input type="password" id="admin-password" placeholder="Enter Password" class="p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <button id="login-btn" class="mt-4 w-full bg-red-500 text-white font-bold p-3 rounded-lg hover:bg-red-600 transition duration-300">
+                    Log In
+                </button>
+            </div>
+
+            <!-- Admin Controls (hidden until logged in) -->
+            <div id="admin-controls" class="hidden">
+                <div class="flex justify-end mb-4 space-x-2">
+                    <button id="hide-admin-btn" class="bg-gray-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300">
+                        Hide Panel
+                    </button>
+                    <button id="logout-btn" class="bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300">
+                        Log Out
+                    </button>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-400 pb-2">Add New Menu Item</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <input type="text" id="item-category" placeholder="Category (e.g., Snacks)" class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <input type="text" id="item-name" placeholder="Item Name (e.g., Pazham Pori)" class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <input type="text" id="item-price" placeholder="Price (e.g., 50)" class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+
+                <div class="flex space-x-4 mt-4">
+                    <button id="add-item-btn" class="w-full bg-red-500 text-white font-bold p-3 rounded-lg hover:bg-red-600 transition duration-300">
+                        Add Item to Menu
+                    </button>
+                </div>
+                
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 mt-6 border-b-2 border-gray-400 pb-2">Manage Menu Items</h3>
+                <div id="admin-menu-list" class="space-y-4">
+                    <!-- Menu items with edit/delete buttons will be rendered here -->
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Edit Modal (initially hidden) -->
+    <div id="edit-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-sm">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Edit Item</h3>
+            <div class="space-y-4">
+                <input type="text" id="edit-item-category" placeholder="New Category" class="p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <input type="text" id="edit-item-name" placeholder="New Item Name" class="p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <input type="text" id="edit-item-price" placeholder="New Price" class="p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+            </div>
+            <div class="flex justify-end space-x-2 mt-6">
+                <button id="save-edit-btn" class="bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300">
+                    Save Changes
+                </button>
+                <button id="cancel-edit-btn" class="bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-400 transition duration-300">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Section with Thank You Card -->
+    <footer class="mt-8 p-6 bg-white shadow-xl rounded-2xl text-center">
+        <div class="text-gray-800">
+            <h3 class="text-2xl font-bold mb-2">Thank You for Visiting!</h3>
+            <p class="text-gray-600">We appreciate you choosing us and hope you have a great time.</p>
+            <!-- Instagram Link moved to the footer -->
+            <div class="mt-4">
+    <a href="https://www.instagram.com/_psycho__user_?igsh=bWNheHhhcTFzeTBi." target="_blank"
+       class="text-red-500 hover:text-red-600 transition duration-300 flex items-center justify-center space-x-2 font-semibold">
+        <svg class="h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+            <path d="M224,202.66A53.34,53.34,0,1,0,277.34,256,53.38,53.38,0,0,0,224,202.66Zm124.71-41a54,54,0,1,1-54-54A54,54,0,0,1,348.71,161.66ZM398.8,84.85C374.54,61.14,343.46,48,309.5,48H138.5C104.54,48,73.46,61.14,49.2,84.85,24.94,108.56,11.8,139.64,11.8,173.6V338.4c0,33.95,13.14,65,37.4,88.75C73.46,450.86,104.54,464,138.5,464h171c33.95,0,65-13.14,89.25-36.85,24.26-23.75,37.4-54.8,37.4-88.75V173.6C436.2,139.64,423.06,108.56,398.8,84.85ZM224,338.4A82.4,82.4,0,1,1,306.4,256,82.49,82.49,0,0,1,224,338.4ZM366.29,157a25.28,25.28,0,1,1,25.28-25.28A25.31,25.31,0,0,1,366.29,157Z"/>
+        </svg>
+        <span>Follow Us on Instagram</span>
+    </a>
+</div>
+
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get all the necessary DOM elements
+            const menuList = document.getElementById('menu-list');
+            const adminMenuList = document.getElementById('admin-menu-list');
+            const adminPanel = document.getElementById('admin-panel');
+            const showAdminBtn = document.getElementById('show-admin-btn');
+            const hideAdminBtn = document.getElementById('hide-admin-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const loginForm = document.getElementById('admin-login-form');
+            const adminControls = document.getElementById('admin-controls');
+            const passwordInput = document.getElementById('admin-password');
+            const loginBtn = document.getElementById('login-btn');
+            const addItemBtn = document.getElementById('add-item-btn');
+            const itemCategoryInput = document.getElementById('item-category');
+            const itemNameInput = document.getElementById('item-name');
+            const itemPriceInput = document.getElementById('item-price');
+            const editModal = document.getElementById('edit-modal');
+            const editItemCategoryInput = document.getElementById('edit-item-category');
+            const editItemNameInput = document.getElementById('edit-item-name');
+            const editItemPriceInput = document.getElementById('edit-item-price');
+            const saveEditBtn = document.getElementById('save-edit-btn');
+            const cancelEditBtn = document.getElementById('cancel-edit-btn');
+
+            const ADMIN_PASSWORD = 'foodie'; // Hardcoded password for this example
+
+            let editingItem = null; // Object to store the category and index of the item being edited
+
+            // Define the initial default menu items
+            const defaultMenu = {
+                'Breakfast': [],
+                'Snacks': [
+                    { name: 'Pazham Pori', price: '₹ 15' }
+                ],
+                'Main Courses': [
+                    { name: 'Kerala Style Porotta', price: '₹ 20' },
+                    { name: 'Beef', price: '₹ 120' }
+                ],
+                'Drinks': [
+                    { name: 'Chaya', price: '₹ 10' },
+                    { name: 'Coffee', price: '₹ 20' }
+                ]
+            };
+
+            let menuItems = {};
+
+            // Function to load menu from local storage.
+            const loadMenu = () => {
+                const storedMenu = localStorage.getItem('foodieMenu');
+                if (storedMenu) {
+                    menuItems = JSON.parse(storedMenu);
+                } else {
+                    menuItems = defaultMenu;
+                    saveMenu();
+                }
+                renderMenus();
+            };
+
+            // Function to save the current menu to local storage
+            const saveMenu = () => {
+                localStorage.setItem('foodieMenu', JSON.stringify(menuItems));
+            };
+
+            // Function to render both the public menu and the admin menu
+            const renderMenus = () => {
+                renderPublicMenu();
+                renderAdminMenu();
+            };
+
+            // Function to render the public menu
+            const renderPublicMenu = () => {
+                menuList.innerHTML = '';
+                for (const category in menuItems) {
+                    if (menuItems[category].length > 0) {
+                        const categoryHeader = document.createElement('h3');
+                        categoryHeader.classList.add('text-xl', 'font-bold', 'text-gray-800', 'mt-4', 'mb-2');
+                        categoryHeader.textContent = category;
+                        menuList.appendChild(categoryHeader);
+
+                        const ul = document.createElement('ul');
+                        ul.classList.add('space-y-2');
+                        menuItems[category].forEach((item, index) => {
+                            const li = document.createElement('li');
+                            li.classList.add('flex', 'flex-col', 'items-start', 'border-b', 'border-gray-200', 'py-2');
+                            li.innerHTML = `
+                                <div class="flex justify-between items-center w-full" data-category="${category}" data-index="${index}">
+                                    <span class="text-lg text-gray-700 font-bold">${item.name}</span>
+                                    <span class="text-lg font-bold text-red-500">${item.price}</span>
+                                </div>
+                            `;
+                            ul.appendChild(li);
+                        });
+                        menuList.appendChild(ul);
+                    }
+                }
+            };
+
+            // Function to render the admin menu with edit/delete buttons
+            const renderAdminMenu = () => {
+                adminMenuList.innerHTML = '';
+                for (const category in menuItems) {
+                    if (menuItems[category].length > 0) {
+                        const categoryHeader = document.createElement('h3');
+                        categoryHeader.classList.add('text-lg', 'font-bold', 'text-gray-700', 'mt-4', 'mb-2');
+                        categoryHeader.textContent = category;
+                        adminMenuList.appendChild(categoryHeader);
+                        
+                        menuItems[category].forEach((item, index) => {
+                            const li = document.createElement('li');
+                            li.classList.add('flex', 'justify-between', 'items-center', 'bg-white', 'p-3', 'rounded-lg', 'shadow-md');
+                            li.innerHTML = `
+                                <div>
+                                    <span class="text-lg font-medium text-gray-700">${item.name}</span>
+                                    <span class="ml-4 text-lg font-bold text-red-500">${item.price}</span>
+                                </div>
+                                <div class="space-x-2">
+                                    <button class="edit-btn bg-blue-500 text-white font-bold py-1 px-3 rounded-lg hover:bg-blue-600 transition duration-300" data-category="${category}" data-index="${index}">
+                                        Edit
+                                    </button>
+                                    <button class="delete-btn bg-red-500 text-white font-bold py-1 px-3 rounded-lg hover:bg-red-600 transition duration-300" data-category="${category}" data-index="${index}">
+                                        Delete
+                                    </button>
+                                </div>
+                            `;
+                            adminMenuList.appendChild(li);
+                        });
+                    }
+                }
+
+                // Attach event listeners to the new buttons
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const category = e.target.dataset.category;
+                        const index = parseInt(e.target.dataset.index);
+                        deleteItem(category, index);
+                    });
+                });
+
+                document.querySelectorAll('.edit-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const category = e.target.dataset.category;
+                        const index = parseInt(e.target.dataset.index);
+                        showEditModal(category, index);
+                    });
+                });
+            };
+
+            // Function to add a new item from the admin panel
+            const addNewItem = () => {
+                const category = itemCategoryInput.value.trim();
+                const name = itemNameInput.value.trim();
+                const price = itemPriceInput.value.trim();
+
+                if (category && name && price) {
+                    const newItem = { name, price: `₹ ${price}` };
+                    // If the category doesn't exist, create it as a new array
+                    if (!menuItems[category]) {
+                        menuItems[category] = [];
+                    }
+                    menuItems[category].push(newItem);
+                    saveMenu();
+                    renderMenus();
+                    itemCategoryInput.value = '';
+                    itemNameInput.value = '';
+                    itemPriceInput.value = '';
+                } else {
+                    showCustomMessage('Please fill in Category, Name, and Price.');
+                }
+            };
+
+            // Function to delete an item
+            const deleteItem = (category, index) => {
+                if (confirm('Are you sure you want to delete this item?')) {
+                    menuItems[category].splice(index, 1);
+                    if (menuItems[category].length === 0) {
+                        delete menuItems[category];
+                    }
+                    saveMenu();
+                    renderMenus();
+                }
+            };
+
+            // Function to show the edit modal
+            const showEditModal = (category, index) => {
+                editingItem = { category, index };
+                const item = menuItems[category][index];
+                editItemCategoryInput.value = category;
+                editItemNameInput.value = item.name;
+                editItemPriceInput.value = item.price.replace('₹ ', '');
+                editModal.classList.remove('hidden');
+            };
+
+            // Function to hide the edit modal
+            const hideEditModal = () => {
+                editModal.classList.add('hidden');
+                editingItem = null;
+            };
+
+            // Function to save the edited item
+            const saveEditedItem = () => {
+                if (editingItem) {
+                    const oldCategory = editingItem.category;
+                    const index = editingItem.index;
+                    const newCategory = editItemCategoryInput.value.trim();
+                    const newName = editItemNameInput.value.trim();
+                    const newPrice = editItemPriceInput.value.trim();
+
+                    if (newCategory && newName && newPrice) {
+                        if (oldCategory !== newCategory) {
+                            const itemToMove = menuItems[oldCategory][index];
+                            menuItems[oldCategory].splice(index, 1);
+                            if (menuItems[oldCategory].length === 0) {
+                                delete menuItems[oldCategory];
+                            }
+                            if (!menuItems[newCategory]) {
+                                menuItems[newCategory] = [];
+                            }
+                            menuItems[newCategory].push(itemToMove);
+                        }
+                        
+                        const targetItem = menuItems[newCategory][newCategory === oldCategory ? index : menuItems[newCategory].length - 1];
+                        targetItem.name = newName;
+                        targetItem.price = `₹ ${newPrice}`;
+                        
+                        saveMenu();
+                        renderMenus();
+                        hideEditModal();
+                    } else {
+                        showCustomMessage('Please fill in Category, Name, and Price.');
+                    }
+                }
+            };
+
+            // Helper function for custom message box
+            const showCustomMessage = (message) => {
+                const messageBox = document.createElement('div');
+                messageBox.classList.add('fixed', 'bottom-4', 'right-4', 'bg-red-500', 'text-white', 'p-4', 'rounded-lg', 'shadow-xl', 'z-50');
+                messageBox.innerText = message;
+                document.body.appendChild(messageBox);
+                setTimeout(() => {
+                    messageBox.remove();
+                }, 3000);
+            };
+
+            // Event listener for the show admin panel button
+            showAdminBtn.addEventListener('click', () => {
+                adminPanel.classList.remove('hidden');
+                showAdminBtn.classList.add('hidden');
+            });
+            
+            // Event listener for the hide admin panel button
+            hideAdminBtn.addEventListener('click', () => {
+                adminPanel.classList.add('hidden');
+                showAdminBtn.classList.remove('hidden');
+            });
+            
+            // Event listener for the logout button
+            logoutBtn.addEventListener('click', () => {
+                adminControls.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+                passwordInput.value = '';
+                showCustomMessage('Logged out successfully.');
+            });
+
+            // Event listener for the 'Log In' button
+            loginBtn.addEventListener('click', () => {
+                if (passwordInput.value === ADMIN_PASSWORD) {
+                    loginForm.classList.add('hidden');
+                    adminControls.classList.remove('hidden');
+                    showCustomMessage('Admin login successful!');
+                    passwordInput.value = '';
+                } else {
+                    showCustomMessage('Incorrect password.');
+                    passwordInput.value = '';
+                }
+            });
+
+            // Event listener for the 'Add Item' button
+            addItemBtn.addEventListener('click', addNewItem);
+
+            // Event listeners for the edit modal buttons
+            saveEditBtn.addEventListener('click', saveEditedItem);
+            cancelEditBtn.addEventListener('click', hideEditModal);
+            
+            // Initial load of the menu when the page is ready
+            loadMenu();
+        });
+    </script>
+</body>
+</html>
