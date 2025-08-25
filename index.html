@@ -7,24 +7,29 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
 </head>
 <body class="p-4 md:p-8">
 
-    <!-- Main Container -->
-    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
+ <header class="bg-red-500 text-white p-6 flex items-center justify-between rounded-t-2xl">
+    <div class="flex items-center space-x-4">
+        <!-- Logo Image -->
+        <img src="./Foodie-logo.png" alt="Foodie Hotel Logo" class="h-20 w-auto">
         
-        <!-- Header Section with Logo and Hotel Name -->
-        <header class="bg-red-500 text-white p-6 flex items-center justify-between rounded-t-2xl">
-            <div class="flex items-center space-x-4">
-                <!-- Logo Image -->
-                <img src="./Foodie_logo.png" alt="Foodie Hotel Logo" class="h-14 w-auto">
-                <!-- <h1 class="text-3xl font-bold tracking-tight">Foodie</h1> -->
-            </div>
-             <!-- Login button for admin panel -->
-            <button id="show-admin-btn" class="bg-white text-red-500 font-semibold px-4 py-2 rounded-full shadow-lg hover:bg-red-100 transition duration-300">
-                Admin Login
-            </button>
-        </header>
+        <!-- Brand Name with minimal, bold font -->
+        <!-- <h1 class="text-4xl tracking-tight" style="font-family: 'Poppins', sans-serif;">
+            Foodie
+        </h1> -->
+    </div>
+
+    <!-- Login button for admin panel -->
+    <button id="show-admin-btn" class="bg-white text-red-500 font-semibold px-4 py-2 rounded-full shadow-lg hover:bg-red-100 transition duration-300">
+        Admin Login
+    </button>
+</header>
+
+
 
         <!-- Menu Section -->
         <main class="p-6">
@@ -151,8 +156,8 @@
                     { name: 'Pazham Pori', price: '₹ 15' }
                 ],
                 'Main Courses': [
-                    { name: 'Kerala Style Porotta', price: '₹ 20' },
-                    { name: 'Beef', price: '₹ 120' }
+                    { name: 'Porotta', price: '₹ 20' },
+                    { name: 'Beef', price: '₹ 30' }
                 ],
                 'Drinks': [
                     { name: 'Chaya', price: '₹ 10' },
